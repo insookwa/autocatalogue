@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser,BaseUserManager,PermissionsMixin)
 
 
+def nameFile(instance, filename):
+    return '/'.join(['images', str(instance.name), filename])
+
+
 #User Creation Models 
 class UserManager(BaseUserManager):
     def create_user(self,username,email,password=None):
@@ -44,11 +48,13 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     def tokens(self):
         return ''
+    
+
 #brands model   
 class Brand(models.Model):
     
     name = models.CharField(max_length=100,null=False,blank=False)
-    logo = models.ImageField(null=False, blank=False)
+    logo = models.ImageField(upload_to=nameFile, blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='date created',auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='Date updated',auto_now=True)
 
@@ -78,6 +84,7 @@ class Model(models.Model):
 class Generation(models.Model):
     
     name = models.CharField(max_length=100,null=False,blank=False)
+    photo = models.ImageField(upload_to=nameFile, blank=True, null=True)
     model = models.ForeignKey(Model, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
@@ -92,7 +99,7 @@ class Generation(models.Model):
 #cars Model
 class Car (models.Model):
    name = models.CharField(max_length=100,null=False,blank=False)
-   logo = models.ImageField(null=False, blank=False)
+   logo = models.ImageField(upload_to=nameFile, blank=True, null=True)
    brand = models.ForeignKey(Brand,on_delete=models.SET_NULL, null=True, blank=True)
    model = models.ForeignKey(Model,on_delete=models.SET_NULL, null=True, blank=True)
    Generation = models.ForeignKey(Generation,on_delete=models.SET_NULL, null=True, blank=True)

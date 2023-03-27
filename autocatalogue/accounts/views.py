@@ -34,6 +34,7 @@ class RegisterView(generics.GenericAPIView):
 class VerifyEmail(generics.GenericAPIView):
     def get(self):
         pass
+
 #Cars View 
 class CarsAPIView(APIView):
     def get(self,request,format=None):
@@ -42,9 +43,10 @@ class CarsAPIView(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
+        
         data = {
                 'name' : request.data.get('name'),
-                'logo' : request.data.get('logo'),
+                'logo' : request.data['file'],
                 'brand' : request.data.get('brand'),
                 'model' : request.data.get('model'),
                 'Generation' : request.data.get('Generation'),
@@ -156,16 +158,5 @@ class PartsAPIView(APIView):
             obj = serializer.save()
             return Response(obj.id, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-
-
-
-
-
 
 
