@@ -63,10 +63,13 @@ class CarsAPIView(APIView):
 
 #Brands View 
 class BrandsAPIView(APIView):
-    def det(self,request,format=None):
-        Response = Brand.objects.all()
-        serializer = BrandSerializer(Response,many=True)
-        return Response(serializer.data,status.HTTP_200_OK)
+
+    def get(self,request):
+        res = Brand.objects.all()
+        print(res)
+        serializer = BrandSerializer(res,many=True)
+
+        return Response(serializer.data)
     
     def post(self,request,*args, **kwargs):
         data = {
@@ -76,7 +79,8 @@ class BrandsAPIView(APIView):
                 'update_at' : request.data.get('update_at'),
                 
         }
-        serializer = BrandSerializer(data=data)
+
+        serializer = BrandPostSerializer(data=data)
         if serializer.is_valid():
             obj = serializer.save()
             return Response(obj.id, status=status.HTTP_201_CREATED)
@@ -84,7 +88,7 @@ class BrandsAPIView(APIView):
 
 #Models View 
 class ModelsAPIView(APIView):
-    def det(self,request,format=None):
+    def get(self,request,format=None):
         Response = Model.objects.all()
         serializer = ModelSerializer(Response,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
@@ -105,7 +109,7 @@ class ModelsAPIView(APIView):
 
 #Generations View 
 class GenerationsAPIView(APIView):
-    def det(self,request,format=None):
+    def get(self,request,format=None):
         Response = Generation.objects.all()
         serializer = GenerationSerializer(Response,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
@@ -125,7 +129,7 @@ class GenerationsAPIView(APIView):
 
 #Categories View 
 class CategoriesAPIView(APIView):
-    def det(self,request,format=None):
+    def get(self,request,format=None):
         Response = Category.objects.all()
         serializer = CategorySerializer(Response,many=True)
         return Response(serializer.data,status.HTTP_200_OK)

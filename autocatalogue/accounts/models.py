@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import (AbstractBaseUser,BaseUserManager,PermissionsMixin)
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
+import os 
 
 
-def nameFile(instance, filename):
-    return '/'.join(['images', str(instance.name), filename])
+
 
 
 #User Creation Models 
@@ -50,11 +50,16 @@ class User(AbstractBaseUser,PermissionsMixin):
         return ''
     
 
+
+
+
+
+
 #brands model   
 class Brand(models.Model):
     
     name = models.CharField(max_length=100,null=False,blank=False)
-    logo = models.ImageField(upload_to=nameFile, blank=True, null=True)
+    logo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
     created_at = models.DateTimeField(verbose_name='date created',auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='Date updated',auto_now=True)
 
@@ -84,7 +89,7 @@ class Model(models.Model):
 class Generation(models.Model):
     
     name = models.CharField(max_length=100,null=False,blank=False)
-    photo = models.ImageField(upload_to=nameFile, blank=True, null=True)
+    photo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
     model = models.ForeignKey(Model, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
@@ -99,7 +104,7 @@ class Generation(models.Model):
 #cars Model
 class Car (models.Model):
    name = models.CharField(max_length=100,null=False,blank=False)
-   logo = models.ImageField(upload_to=nameFile, blank=True, null=True)
+   logo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
    brand = models.ForeignKey(Brand,on_delete=models.SET_NULL, null=True, blank=True)
    model = models.ForeignKey(Model,on_delete=models.SET_NULL, null=True, blank=True)
    Generation = models.ForeignKey(Generation,on_delete=models.SET_NULL, null=True, blank=True)
