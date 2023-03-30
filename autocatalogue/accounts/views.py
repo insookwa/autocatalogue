@@ -38,8 +38,8 @@ class VerifyEmail(generics.GenericAPIView):
 #Cars View 
 class CarsAPIView(APIView):
     def get(self,request,format=None):
-        response  = Car.objects.all()
-        serializer =CarSerializer(response ,many=True)
+        res  = Car.objects.all()
+        serializer =CarSerializer(res ,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
@@ -72,6 +72,7 @@ class BrandsAPIView(APIView):
         return Response(serializer.data)
     
     def post(self,request,*args, **kwargs):
+        
         data = {
                 'name' : request.data.get('name'),
                 'logo' : request.data.get('logo'),
@@ -89,8 +90,8 @@ class BrandsAPIView(APIView):
 #Models View 
 class ModelsAPIView(APIView):
     def get(self,request,format=None):
-        Response = Model.objects.all()
-        serializer = ModelSerializer(Response,many=True)
+        Res= Model.objects.all()
+        serializer = ModelSerializer(Res,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
@@ -110,8 +111,8 @@ class ModelsAPIView(APIView):
 #Generations View 
 class GenerationsAPIView(APIView):
     def get(self,request,format=None):
-        Response = Generation.objects.all()
-        serializer = GenerationSerializer(Response,many=True)
+        Res = Generation.objects.all()
+        serializer = GenerationSerializer(Res,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
@@ -130,8 +131,8 @@ class GenerationsAPIView(APIView):
 #Categories View 
 class CategoriesAPIView(APIView):
     def get(self,request,format=None):
-        Response = Category.objects.all()
-        serializer = CategorySerializer(Response,many=True)
+        Res = Category.objects.all()
+        serializer = CategorySerializer(Res,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
@@ -148,8 +149,8 @@ class CategoriesAPIView(APIView):
 #Parts View 
 class PartsAPIView(APIView):
     def det(self,request,format=None):
-        Response = Part.objects.all()
-        serializer = PartsSerializer(Response,many=True)
+        Res = Part.objects.all()
+        serializer = PartsSerializer(Res,many=True)
         return Response(serializer.data,status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
