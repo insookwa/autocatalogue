@@ -1,6 +1,7 @@
 from .views import *
 from django.urls import path
 
+
 urlpatterns = [
     path('cars/',CarsAPIView.as_view(), name='cars'),
     path('brands/',BrandsAPIView.as_view(), name='cars'),
