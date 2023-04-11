@@ -36,7 +36,6 @@ class Model(models.Model):
 class Generation(models.Model):
     
     name = models.CharField(max_length=100,null=False,blank=False)
-    photo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
     model = models.ForeignKey(Model, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
@@ -51,7 +50,7 @@ class Generation(models.Model):
 #cars Model
 class Car (models.Model):
    name = models.CharField(max_length=100,null=False,blank=False)
-   logo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
+   photo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
    brand = models.ForeignKey(Brand,on_delete=models.SET_NULL, null=True, blank=True)
    model = models.ForeignKey(Model,on_delete=models.SET_NULL, null=True, blank=True)
    Generation = models.ForeignKey(Generation,on_delete=models.SET_NULL, null=True, blank=True)

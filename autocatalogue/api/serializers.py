@@ -17,7 +17,7 @@ class BrandPostSerializer(serializers.ModelSerializer):
     logo = serializers.ImageField(max_length = None, use_url=True)
     class Meta:
         model = Brand
-        fields = ('id','name','logo','created_at','updated_at')
+        fields = ('id','name','logo',)
 
     def create(self, validated_data):
             return Brand.objects.create(**validated_data)       

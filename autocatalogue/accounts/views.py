@@ -30,6 +30,7 @@ class RegisterView(generics.GenericAPIView):
         current_site = get_current_site(request).domain
         relativeLink = reverse('email-verify')
         absurl = 'http://'+current_site+relativeLink+"?token="+str(token)
+        print(token)
         email_body = 'Hi '+user.username+'Use link below to verify your email \n'+absurl
         data = {'email_body':email_body,'to_email':user.email,'email_subject':'Verify your email'}
         Util.send_email(data)
@@ -38,15 +39,17 @@ class RegisterView(generics.GenericAPIView):
 
 class VerifyEmail(views.APIView):
     serializer_class = EmailVarificationSerializer
-
     token_param_config = openapi.Parameter('token',in_=openapi.IN_QUERY,description='Введите токен, полученный после регистрации, для верификации пользователя',type=openapi.TYPE_STRING)
 
     @swagger_auto_schema(manual_parameters=[token_param_config])
     def get(self,request):
-        token = request.GET.get('token')
+        token = self.request.GET.get('token')
         try:
-            payload = jwt.decode(token,settings.SECRET_KEY)
-            user = User.objects.get(id=payload('user_id'))
+            print(f"token: {token}")
+
+            payload = jwt.decode(token,settings.SECRET_KEY,algorithms=['HS256'])
+            # payload = jwt.decode(token)
+            user = User.objects.get(id=payload['user_id'])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
@@ -54,5 +57,12 @@ class VerifyEmail(views.APIView):
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error': 'Activation Expired'}, status=status.HTTP_200_OK)
         except jwt.exceptions.DecodeError as identifier:
-            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Invalid token %s' % identifier}, status=status.HTTP_400_BAD_REQUEST)
         
+
+class LoginAPIView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+    def post(self,request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception =True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

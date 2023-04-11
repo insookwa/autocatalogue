@@ -16,12 +16,11 @@ class CarsAPIView(APIView):
     def post(self,request,*args, **kwargs):
         
         data = {
-                'name' : request.data.get('name'),
-                'logo' : request.data['logo'],
-                'brand' : request.data.get('brand'),
-                'model' : request.data.get('model'),
-                'Generation' : request.data.get('Generation'),
-                'description' : request.data.get('description'),   
+                'name' : request.POST.get('name'),
+                'photo' : request.FILES['photo'],
+                'brand' : request.POST.get('brand'),
+                'model' : request.POST.get('model'),
+
  
         }
 
@@ -44,12 +43,10 @@ class BrandsAPIView(APIView):
     
     def post(self,request,*args, **kwargs):
 
+
         data = {
-                'name' : request.data.get('name'),
-                'logo' : request.data.get('file'),
-                'created_at' : request.data.get('created_at'),
-                'update_at' : request.data.get('update_at'),
-                
+                'name' : request.POST.get('name'),
+                'logo' : request.FILES['logo'],   
         }
 
         serializer = BrandPostSerializer(data=data)
@@ -66,13 +63,12 @@ class ModelsAPIView(APIView):
         return Response(serializer.data,status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
+
         data = {
-                'name' : request.data.get('name'),
-                'brand' : request.data.get('brand'),
-                'created_at' : request.data.get('created_at'),
-                'update_at' : request.data.get('update_at'),
-                
+                'name' : request.POST.get('name'),
+                'brand' : request.POST.get('brand'),
         }
+
         serializer = ModelSerializer(data=data)
         if serializer.is_valid():
             obj = serializer.save()
@@ -88,10 +84,9 @@ class GenerationsAPIView(APIView):
     
     def post(self,request,*args, **kwargs):
         data = {
-                'name' : request.data.get('name'),
-                'model' : request.data.get('model'),
-                'created_at' : request.data.get('created_at'),
-                'update_at' : request.data.get('update_at'),
+
+                'name' : request.POST.get('name'),
+                'model' : request.POST.get('model'),
         }
         serializer = GenerationSerializer(data=data)
         if serializer.is_valid():
@@ -108,7 +103,7 @@ class CategoriesAPIView(APIView):
     
     def post(self,request,*args, **kwargs):
         data = {
-                'name' : request.data.get('name'),
+                'name' : request.POST.get('name'),
 
         }
         serializer = CategorySerializer(data=data)
@@ -126,7 +121,7 @@ class PartsAPIView(APIView):
     
     def post(self,request,*args, **kwargs):
         data = {
-                'name' : request.data.get('name'),
+                'name' : request.POST.get('name'),
 
         }
         serializer = PartsSerializer(data=data)
