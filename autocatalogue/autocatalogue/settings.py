@@ -96,7 +96,7 @@ DATABASES = {
         'USER': 'mediasoft',
         'PASSWORD': 'Mediasoft@2023',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 

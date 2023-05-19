@@ -53,28 +53,41 @@ class Car (models.Model):
    photo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
    brand = models.ForeignKey(Brand,on_delete=models.SET_NULL, null=True, blank=True)
    model = models.ForeignKey(Model,on_delete=models.SET_NULL, null=True, blank=True)
-   Generation = models.ForeignKey(Generation,on_delete=models.SET_NULL, null=True, blank=True)
+   generation = models.ForeignKey(Generation,on_delete=models.SET_NULL, null=True, blank=True)
    description =description = models.TextField()
 
+#Spare parts category model
 class Category(models.Model):
 
     name = models.CharField(max_length=100, null=False, blank=False)
+    photo = models.ImageField(upload_to='images/', default='image/None/No-img.jpg')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 
     def __str__(self):
         return self.name
     class Meta:
         verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = 'Categories'  
 
- #Spare parts model   
+
+#Spare parts model   
 class Part(models.Model):
 
     name = models.CharField(max_length=100, null=False, blank=False)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField()
+    generation = models.ForeignKey(Generation,on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
     class Meta:
         verbose_name = 'part'
         verbose_name_plural = 'Parts'
+
+
+

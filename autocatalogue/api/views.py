@@ -20,8 +20,8 @@ class CarsAPIView(APIView):
                 'photo' : request.FILES['photo'],
                 'brand' : request.POST.get('brand'),
                 'model' : request.POST.get('model'),
-
- 
+                'generation' : request.POST.get('generation'),
+                'description' : request.POST.get('description'),
         }
 
         serializer = CarSerializer(data=data)
@@ -106,7 +106,7 @@ class CategoriesAPIView(APIView):
                 'name' : request.POST.get('name'),
 
         }
-        serializer = CategorySerializer(data=data)
+        serializer = CategoryPostSerializer(data=data)
         if serializer.is_valid():
             obj = serializer.save()
             return Response(obj.id, status=status.HTTP_201_CREATED)
