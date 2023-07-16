@@ -9,5 +9,7 @@ urlpatterns = [
     path('generations/',ModelsAPIView.as_view(), name='generations'),
     path('categories/',CategoriesAPIView.as_view(), name='categories'),
     path('parts/',PartsAPIView.as_view(), name='parts'),
+    path('favoritecar/',FavouriteCarsAPIView.as_view(),name='Favourite_car')
+   
 
 ]

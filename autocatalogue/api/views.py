@@ -4,13 +4,18 @@ from rest_framework.response import Response
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
+from rest_framework import permissions
+from .permissions import IsOwner
 
 
 #Cars View 
 class CarsAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self,request,format=None):
         res  = Car.objects.all()
         serializer =CarSerializer(res ,many=True)
+        
         return Response(serializer.data,status=status.HTTP_200_OK)
     
     def post(self,request,*args, **kwargs):
@@ -25,6 +30,7 @@ class CarsAPIView(APIView):
         }
 
         serializer = CarSerializer(data=data)
+        
         if serializer.is_valid():
             obj = serializer.save()
             return Response(obj.id, status=status.HTTP_201_CREATED)
@@ -33,6 +39,7 @@ class CarsAPIView(APIView):
 
 #Brands View 
 class BrandsAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self,request):
         res = Brand.objects.all()
@@ -57,6 +64,7 @@ class BrandsAPIView(APIView):
 
 #Models View 
 class ModelsAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self,request,format=None):
         Res= Model.objects.all()
         serializer = ModelSerializer(Res,many=True)
@@ -77,6 +85,7 @@ class ModelsAPIView(APIView):
 
 #Generations View 
 class GenerationsAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self,request,format=None):
         Res = Generation.objects.all()
         serializer = GenerationSerializer(Res,many=True)
@@ -96,6 +105,7 @@ class GenerationsAPIView(APIView):
 
 #Categories View 
 class CategoriesAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self,request,format=None):
         Res = Category.objects.all()
         serializer = CategorySerializer(Res,many=True)
@@ -114,6 +124,7 @@ class CategoriesAPIView(APIView):
 
 #Parts View 
 class PartsAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def det(self,request,format=None):
         Res = Part.objects.all()
         serializer = PartsSerializer(Res,many=True)
@@ -129,6 +140,33 @@ class PartsAPIView(APIView):
             obj = serializer.save()
             return Response(obj.id, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class FavouriteCarsAPIView(ListCreateAPIView):
+    serializer_class = FavouriteCarSerializer
+    queryset =FavoriteCar.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
 
 
+
+
+    def perform_create(self, serializer):
+        return serializer.save(owner = self.request.user)
+    
+    def get_queryset(self):
+        return self.queryset.filter(owner = self.request.user)
+
+class FavouriteCarsDetailAPIView(ListCreateAPIView):
+    serializer_class = FavouriteCarSerializer
+    queryset =FavoriteCar.objects.all()
+    permission_classes = (permissions.IsAuthenticated,IsOwner)
+    lookup_field = 'id'
+
+
+
+
+    def perform_create(self, serializer):
+        return serializer.save(owner = self.request.user)
+    
+    def get_queryset(self):
+        return self.queryset.filter(owner = self.request.user)
 

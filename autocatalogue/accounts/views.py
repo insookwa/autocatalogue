@@ -22,7 +22,9 @@ class RegisterView(generics.GenericAPIView):
         user = request.data
         serializer=self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        u  = serializer.save()
+        u.set_password(user.get('password'))
+        u.save()
         user_data = serializer.data
 
         user = User.objects.get(email = user_data['email'])

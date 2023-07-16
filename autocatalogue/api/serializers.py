@@ -82,3 +82,10 @@ class PartsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Part
         fields = '__all__'
+
+class FavouriteCarSerializer(serializers.ModelSerializer):
+     
+     class Meta:
+          model = FavoriteCar
+          fields = ['favourite_car','created_at','updated_at']
+          

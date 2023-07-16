@@ -1,4 +1,5 @@
 from django.db import models
+from accounts.models import *
 
 
 
@@ -89,5 +90,16 @@ class Part(models.Model):
         verbose_name = 'part'
         verbose_name_plural = 'Parts'
 
+class FavoriteCar(models.Model):
+    User_ID=models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    favourite_car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
+
+class FavoritePart(models.Model):
+    User_ID=models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    favourite_part = models.ForeignKey(Part, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
